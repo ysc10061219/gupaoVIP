@@ -3,6 +3,7 @@ package com.ysc.rabbitmq;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
+import java.util.Queue;
 
 /***
  * 消费者 direct
@@ -10,6 +11,8 @@ import java.io.IOException;
 public class Consumer_direct {
     //队列名称
     private static final String QUEUE = "queue_direct";
+    private static final String EXCHANE = "exchane_direct";
+    private static final String ROUTING_KEY = "routing_key_direct";
 
     public static void main(String[] args) throws Exception {
         //设置mq参数
@@ -22,8 +25,12 @@ public class Consumer_direct {
         connection = connectionFactory.newConnection();
         //创建通道
         channel = connection.createChannel();
+        //创建交换机
+        channel.exchangeDeclare(EXCHANE,BuiltinExchangeType.DIRECT);
         //创建队列
         channel.queueDeclare(QUEUE, true, false, false, null);
+        //绑定队列与交换机
+        channel.queueBind(QUEUE,EXCHANE,ROUTING_KEY);
         //定义消费方法
         DefaultConsumer consumer = new DefaultConsumer(channel) {
             @Override
