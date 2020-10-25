@@ -1,0 +1,14 @@
+server:
+  port: 44002
+spring:
+  application:
+    name: springboot-delay-producer
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtualHost: /
+    listener:
+      simple:
+        acknowledge-mode: manual #手动ACK 不开启自动ACK模式,目的是防止报错后未正确处理消息丢失 默认 为 none
